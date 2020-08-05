@@ -43,8 +43,6 @@ public class V1_14 extends NMS {
 		npc.setLocation(location.getX(), location.getY(), location.getZ(),
 			location.getYaw(), location.getPitch());
 
-		((CraftWorld)player.getWorld()).getHandle().addEntity(npc);
-
 		sendPackets(npc.getBukkitEntity().getPlayer());
 
 		npc.getBukkitEntity().setFlying(false);
@@ -95,6 +93,8 @@ public class V1_14 extends NMS {
 	@Override
 	public void animate(Player player, int state) {
 		EntityPlayer p = ((CraftPlayer) player).getHandle();
+		DataWatcherObject<EntityPose> poseWatcher = DataWatcher.a(Entity.class, DataWatcherRegistry.s);
+
 		switch(state) {
 			case 1:
 				p.getBukkitEntity().setSneaking(true);
@@ -115,6 +115,7 @@ public class V1_14 extends NMS {
 				}.runTaskLater(plugin, 4);
 				break;
 		}
+		p.getDataWatcher().set(poseWatcher, EntityPose.SNEAKING);
 		sendPacket(new PacketPlayOutEntityMetadata(p.getId(), p.getDataWatcher(), true));
 	}
 
