@@ -92,10 +92,12 @@ public class V1_15 extends NMS {
 		EntityPlayer p = ((CraftPlayer) player).getHandle();
 		switch(state) {
 			case 1:
-				p.getBukkitEntity().setSneaking(true);
+				p.getDataWatcher().set(DataWatcherRegistry.s.a(6), EntityPose.CROUCHING);
+				sendPacket(new PacketPlayOutEntityMetadata(p.getId(), p.getDataWatcher(), true));
 				break;
 			case 2:
-				p.getBukkitEntity().setSneaking(false);
+				p.getDataWatcher().set(DataWatcherRegistry.s.a(6), EntityPose.STANDING);
+				sendPacket(new PacketPlayOutEntityMetadata(p.getId(), p.getDataWatcher(), true));
 				break;
 			case 3:
 				sendPacket(new PacketPlayOutAnimation(p, 0));

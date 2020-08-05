@@ -97,10 +97,12 @@ public class V1_14 extends NMS {
 
 		switch(state) {
 			case 1:
-				p.getBukkitEntity().setSneaking(true);
+				p.getDataWatcher().set(DataWatcherRegistry.s.a(6), EntityPose.SNEAKING);
+				sendPacket(new PacketPlayOutEntityMetadata(p.getId(), p.getDataWatcher(), true));
 				break;
 			case 2:
-				p.getBukkitEntity().setSneaking(false);
+				p.getDataWatcher().set(DataWatcherRegistry.s.a(6), EntityPose.STANDING);
+				sendPacket(new PacketPlayOutEntityMetadata(p.getId(), p.getDataWatcher(), true));
 				break;
 			case 3:
 				sendPacket(new PacketPlayOutAnimation(p, 0));
@@ -115,8 +117,6 @@ public class V1_14 extends NMS {
 				}.runTaskLater(plugin, 4);
 				break;
 		}
-		p.getDataWatcher().set(poseWatcher, EntityPose.SNEAKING);
-		sendPacket(new PacketPlayOutEntityMetadata(p.getId(), p.getDataWatcher(), true));
 	}
 
 	private void sendPacket(final Packet<PacketListenerPlayOut> p) {
